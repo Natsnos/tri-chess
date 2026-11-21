@@ -13,6 +13,10 @@ A 3D, browser-based take on tri-dimensional chess: three stacked 4×4 main level
 - Sound effects, capture effects, battle close-ups, stats and achievements
 - Autosave plus shareable game codes
 
+## Full screen
+- The game switches to full screen on your first tap or click (turn this off in Menu → Settings).
+- On phones, use your browser's **Add to Home Screen** to launch it full screen like an app.
+
 ## Notes
 - Everything is in the single `index.html` file; three.js and fonts load from public CDNs.
 - Online play, reading moves aloud, and voice input rely on the Claude-hosted version and are hidden or disabled when run elsewhere. Typed move commands work everywhere.

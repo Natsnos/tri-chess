@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="3D Chess">
+<meta name="theme-color" content="#060a14">
 <title>Tri-Dimensional Chess</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -139,7 +144,12 @@ body.menu aside{transform:none}
 .menuBtn{position:fixed;top:10px;right:12px;z-index:35;background:var(--brass);color:#1b1408;border-color:var(--brass)}
 body.menu .menuBtn{background:#172140;color:var(--ink);border-color:#33456c}
 .hud{z-index:5}
-@media(max-width:600px){.fsstat{top:46px;max-width:calc(100vw - 120px)}header h1{font-size:17px}#tutBtn{display:none}}
+header{left:calc(14px + env(safe-area-inset-left));top:calc(10px + env(safe-area-inset-top))}
+.menuBtn{top:calc(10px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right))}
+.fsstat{left:calc(14px + env(safe-area-inset-left));top:calc(52px + env(safe-area-inset-top))}
+.hud{left:calc(12px + env(safe-area-inset-left));right:calc(12px + env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom))}
+aside{padding-top:calc(62px + env(safe-area-inset-top));padding-bottom:calc(28px + env(safe-area-inset-bottom));padding-right:calc(14px + env(safe-area-inset-right))}
+@media(max-width:600px){.fsstat{top:calc(46px + env(safe-area-inset-top));max-width:calc(100vw - 120px)}header h1{font-size:17px}#tutBtn{display:none}}
 </style>
 </head>
 <body>
@@ -229,6 +239,7 @@ body.menu .menuBtn{background:#172140;color:var(--ink);border-color:#33456c}
       <label class="tog"><input type="checkbox" id="optGlow"> Glow effects</label>
       <label class="tog"><input type="checkbox" id="optAnim"> Animated pieces and scenery</label>
       <label class="tog"><input type="checkbox" id="optClose"> Battle close-ups on captures</label>
+      <label class="tog"><input type="checkbox" id="optAutofs"> Go full screen when I start playing</label>
       <label class="tog" id="speakWrap" hidden><input type="checkbox" id="optSpeak"> Read moves aloud</label>
       <div class="row"><select id="optScene" aria-label="Scenery"><option value="match">Scenery matches the armies</option><option value="space">Space lounge</option><option value="bridge">Starship bridge</option><option value="hall">Castle hall</option><option value="forest">Moonlit forest</option><option value="cathedral">Cathedral</option><option value="dunes">Twin-sun desert</option><option value="none">Plain background</option></select></div>
       <h3>Your own 3D models</h3><p class="note" style="margin-top:0">Load .glb files for any pieces (missing ones use the classic shape). Name files like king.glb so they're recognized, or pick the piece first.</p>
@@ -459,7 +470,7 @@ const recipeOf=c=>(SETS.find(s=>s.id===setOf(c))||{}).recipe||null;
 const CAPSND={fleet:()=>'laser',knights:()=>'saber',fantasy:()=>'clang',gothic:()=>'bell',vw:c=>c==='w'?'bat':'howl'};
 
 /* ---------- settings ---------- */
-const OPT={glow:store.get('t3d-glow','1')==='1',anim:store.get('t3d-anim','1')==='1',close:store.get('t3d-close','1')==='1',scene:store.get('t3d-scene','match'),speak:store.get('t3d-speak','0')==='1',threats:false};
+const OPT={autofs:store.get('t3d-autofs','1')==='1',glow:store.get('t3d-glow','1')==='1',anim:store.get('t3d-anim','1')==='1',close:store.get('t3d-close','1')==='1',scene:store.get('t3d-scene','match'),speak:store.get('t3d-speak','0')==='1',threats:false};
 function setOpt(k,v){OPT[k]=v;store.set('t3d-'+k,typeof v==='boolean'?(v?'1':'0'):v);if(has3D)V.opts();render()}
 /* ---------- puzzles & campaign ---------- */
 const PUZ=[...[{"p":{"W:1:1":{"t":"K","c":"w","m":1},"WQ:0:0":{"t":"K","c":"b","m":1},"N:0:1":{"t":"Q","c":"w","m":1},"BQ:0:0":{"t":"N","c":"w","m":1}},"s":["N:0:1>W:0:0","N:0:1>WQ:1:1"]},{"p":{"WK:0:1":{"t":"K","c":"w","m":1},"B:3:1":{"t":"K","c":"b","m":1},"W:2:3":{"t":"R","c":"w","m":1},"BK:1:0":{"t":"R","c":"w","m":1},"B:1:0":{"t":"P","c":"b","m":1},"N:1:0":{"t":"P","c":"b","m":1}},"s":["BK:1:0>B:3:3","BK:1:0>BK:0:0"]},{"p":{"WK:0:1":{"t":"K","c":"w","m":1},"N:3:3":{"t":"K","c":"b","m":1},"B:0:1":{"t":"N","c":"w","m":1},"B:0:0":{"t":"Q","c":"w","m":1},"B:3:2":{"t":"R","c":"b","m":1},"N:3:1":{"t":"P","c":"b","m":1}},"s":["B:0:0>N:2:2","B:0:0>B:2:0"]},{"p":{"B:3:2":{"t":"K","c":"w","m":1},"B:3:0":{"t":"K","c":"b","m":1},"N:0:0":{"t":"Q","c":"w","m":1},"W:0:3":{"t":"R","c":"w","m":1}},"s":["N:0:0>N:3:3","N:0:0>B:3:1"]},{"p":{"W:1:0":{"t":"K","c":"w","m":1},"N:3:1":{"t":"K","c":"b","m":1},"B:1:3":{"t":"Q","c":"w","m":1},"N:2:2":{"t":"R","c":"w","m":1},"N:0:0":{"t":"P","c":"b","m":1}},"s":["B:1:3>N:3:3","B:1:3>B:3:1"]},{"p":{"W:1:2":{"t":"K","c":"w","m":1},"N:3:1":{"t":"K","c":"b","m":1},"N:2:0":{"t":"R","c":"w","m":1},"B:0:2":{"t":"R","c":"w","m":1}},"s":["B:0:2>B:3:2"]},{"p":{"N:2:1":{"t":"K","c":"w","m":1},"W:2:3":{"t":"K","c":"b","m":1},"W:2:1":{"t":"N","c":"w","m":1}},"s":["W:2:1>W:0:2","W:2:1>N:0:0"]},{"p":{"WQ:1:1":{"t":"K","c":"w","m":1},"N:0:0":{"t":"K","c":"b","m":1},"N:2:1":{"t":"Q","c":"w","m":1},"B:1:3":{"t":"B","c":"w","m":1},"B:3:1":{"t":"N","c":"b","m":1},"N:0:1":{"t":"P","c":"b","m":1}},"s":["B:1:3>N:3:3","B:1:3>B:3:1"]},{"p":{"W:2:1":{"t":"K","c":"w","m":1},"BK:1:0":{"t":"K","c":"b","m":1},"W:3:2":{"t":"Q","c":"w","m":1},"B:0:0":{"t":"B","c":"w","m":1}},"s":["W:3:2>BK:0:0"]},{"p":{"N:0:3":{"t":"K","c":"w","m":1},"B:0:1":{"t":"K","c":"b","m":1},"N:2:2":{"t":"P","c":"w","m":1},"N:0:1":{"t":"B","c":"w","m":1},"B:3:1":{"t":"P","c":"b","m":1}},"s":["N:0:1>N:1:2","N:0:1>B:1:0"]}].map((p,i)=>({...p,n:1,name:'Mate in one #'+(i+1)})),...[{"p":{"W:2:1":{"t":"K","c":"w","m":1},"W:2:3":{"t":"K","c":"b","m":1},"B:3:1":{"t":"Q","c":"w","m":1},"WQ:1:0":{"t":"B","c":"w","m":1}},"s":["B:3:1>N:1:3","B:3:1>B:1:1"]},{"p":{"B:3:2":{"t":"K","c":"w","m":1},"N:2:1":{"t":"K","c":"b","m":1},"W:1:0":{"t":"N","c":"w","m":1},"W:1:1":{"t":"Q","c":"w","m":1}},"s":["B:3:2>N:2:3","B:3:2>B:2:1"]},{"p":{"W:1:3":{"t":"K","c":"w","m":1},"WK:0:1":{"t":"K","c":"b","m":1},"B:2:0":{"t":"Q","c":"w","m":1},"N:2:2":{"t":"Q","c":"w","m":1}},"s":["B:2:0>W:2:0","N:2:2>W:2:0"]},{"p":{"W:1:0":{"t":"K","c":"w","m":1},"W:3:0":{"t":"K","c":"b","m":1},"B:3:2":{"t":"R","c":"w","m":1},"W:3:3":{"t":"B","c":"w","m":1},"W:1:2":{"t":"P","c":"b","m":1}},"s":["b:WK>WKb"]},{"p":{"B:0:2":{"t":"K","c":"w","m":1},"BK:0:0":{"t":"K","c":"b","m":1},"W:0:3":{"t":"B","c":"w","m":1},"B:1:0":{"t":"Q","c":"w","m":1},"N:3:0":{"t":"N","c":"b","m":1}},"s":["B:1:0>B:3:2","B:1:0>BK:1:0"]},{"p":{"WQ:1:0":{"t":"K","c":"w","m":1},"N:0:1":{"t":"K","c":"b","m":1},"B:2:3":{"t":"R","c":"w","m":1},"N:0:3":{"t":"B","c":"w","m":1}},"s":["b:WQ>WQb"]}].map((p,i)=>({...p,n:2,name:'Mate in two #'+(i+1)}))];
@@ -762,7 +773,7 @@ function renderExtras(){if(!$('camp'))return;
   $('statNums').innerHTML=[['Played',S.played],['Won',S.won],['Lost',S.lost],['Drawn',S.drawn],['Longest',S.longest+' moves'],['Top army',fav?(SETS.find(s=>s.id===fav[0])||{name:fav[0]}).name:'—']].map(([l,v])=>`<div><small>${l}</small><b>${v}</b></div>`).join('');
   $('achList').innerHTML=ACH.map(([id,t,d])=>`<li class="${S.ach[id]?'got':''}"><b>${t}</b><small>${d}</small></li>`).join('');
   $('achCount').textContent=`${Object.keys(S.ach).length} of ${ACH.length} unlocked`;
-  $('optGlow').checked=OPT.glow;$('optAnim').checked=OPT.anim;$('optClose').checked=OPT.close;$('optScene').value=OPT.scene;
+  $('optGlow').checked=OPT.glow;$('optAutofs').checked=OPT.autofs;$('optAnim').checked=OPT.anim;$('optClose').checked=OPT.close;$('optScene').value=OPT.scene;
   $('speakWrap').hidden=!TTS;$('optSpeak').checked=OPT.speak;$('micBtn').hidden=!DIC}
 function startCampaign(i){const c=CAMP[i];if(!c||i>PROG.camp)return;$('mode').value='w';$('lvl').value=c.lvl==='e'||c.lvl==='1'?'1':c.lvl==='m'||c.lvl==='2'?'2':'3';
   setB=c.army;store.set('t3d-setb',setB);renderShop();start();G.camp=i;G.lvlKey=c.lvl;toast(`${c.name} accepts your challenge`)}
@@ -1310,6 +1321,11 @@ $('tlNext').onclick=()=>{stopPlay();viewAt((G.view??G.hist.length-1)+1,true)};$(
 $('threatBtn').onclick=()=>{OPT.threats=!OPT.threats;render()};
 $('fsBtn').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){toast('Your browser blocked full screen here; press F11 instead.')}};
 document.addEventListener('fullscreenchange',()=>{$('fsBtn').textContent=document.fullscreenElement?'Exit full screen':'Full screen'});
+let fsTried=false;
+const canFs=()=>!!(document.documentElement.requestFullscreen&&document.fullscreenEnabled!==false);
+document.addEventListener('pointerdown',e=>{if(!OPT.autofs||fsTried||document.fullscreenElement||!canFs())return;if(e.target.closest('#fsBtn,#optAutofs,input,select,textarea'))return;fsTried=true;
+  document.documentElement.requestFullscreen().catch(()=>toast('Full screen is blocked in this view. Open the game in its own tab, or press F11.'))},true);
+$('optAutofs').onchange=e=>{OPT.autofs=e.target.checked;store.set('t3d-autofs',e.target.checked?'1':'0');fsTried=false};
 const menu=open=>{document.body.classList.toggle('menu',open);$('menuBtn').setAttribute('aria-expanded',open);$('menuBtn').textContent=open?'Close menu':'Menu'};
 $('menuBtn').onclick=()=>menu(!document.body.classList.contains('menu'));
 $('hudUndo').onclick=()=>$('undo').click();$('hudHint').onclick=()=>$('hintBtn').click();
