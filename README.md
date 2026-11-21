@@ -5,7 +5,7 @@ A 3D, browser-based take on tri-dimensional chess: three stacked 4×4 main level
 **Play it:** open `index.html` in a browser, or publish the repo with GitHub Pages (Settings → Pages → Deploy from branch → `main` / root).
 
 ## Features
-- Rotatable, zoomable 3D stand with lighting, shadows, glow, and scenery that matches your armies
+- Full-window 3D board with a slide-out menu; rotatable, zoomable stand with lighting, shadows, glow, and scenery that matches your armies
 - 11 piece sets, including themed armies (Vampires vs Werewolves, Star Knights, Starship Fleet, Dragon Realm, Gothic Cathedral), mix-and-match per side, and your own `.glb` models
 - Play the computer (four strengths, campaign of six opponents) or a friend on one screen with auto-turning board
 - Full rules: castling, en passant, promotion, attack-board moves, check/mate/stalemate, 50-move and repetition draws
