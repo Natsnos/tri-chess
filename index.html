@@ -1229,10 +1229,10 @@ try{V=(()=>{
   }
   /* camera orbit */
   const target=new T.Vector3(3,2.5,-5),baseTarget=target.clone();let closeTo=null,closeUntil=0,cz=1;
-  const cam={th:-.4,ph:56*Math.PI/180,z:1,tth:-.4,tph:56*Math.PI/180,tz:1,base:17};
+  const cam={th:-.4,ph:56*Math.PI/180,z:1,tth:-.4,tph:56*Math.PI/180,tz:1,base:13.2};
   let slowUntil=0;
   function face(black){const want=(black?Math.PI:0)-.4;cam.tth=want+TAU*Math.round((cam.tth-want)/TAU);slowUntil=performance.now()+1600}
-  function resize(){const w=wrap.clientWidth,h=wrap.clientHeight;renderer.setSize(w,h,false);if(composer){composer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));composer.setSize(w,h)}camera.aspect=w/h;camera.updateProjectionMatrix();cam.base=17*Math.max(1,1.05/camera.aspect)}
+  function resize(){const w=wrap.clientWidth,h=wrap.clientHeight;renderer.setSize(w,h,false);if(composer){composer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));composer.setSize(w,h)}camera.aspect=w/h;camera.updateProjectionMatrix();cam.base=13.2*Math.max(1,1.15/camera.aspect)}
   new ResizeObserver(resize).observe(wrap);resize();calibrate();
   const ray=new T.Raycaster(),ptr=new T.Vector2();
   function pick(x,y){const r=renderer.domElement.getBoundingClientRect();ptr.set((x-r.left)/r.width*2-1,-(y-r.top)/r.height*2+1);
